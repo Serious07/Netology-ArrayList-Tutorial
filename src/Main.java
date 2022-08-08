@@ -1,3 +1,4 @@
+import javax.annotation.processing.SupportedSourceVersion;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,12 +13,14 @@ public class Main {
         String consoleLine;
         int commandIndex;
 
-        System.out.println("Список операций: ");
-        System.out.println("1. Добавить.");
-        System.out.println("2. Показать.");
-        System.out.println("3. Удалить.");
-
         while (true){
+            System.out.println();
+            System.out.println("Список операций: ");
+            System.out.println("1. Добавить.");
+            System.out.println("2. Показать.");
+            System.out.println("3. Удалить.");
+            System.out.println("4. Найти.");
+
             System.out.println();
             System.out.println("Выберите операцию:");
 
@@ -36,6 +39,9 @@ public class Main {
                     case 3:
                         removeProduct();
                         break;
+                    case 4:
+                        findProducts();
+                        break;
                     default:
                         warningUseOnlyNumbers();
                         break;
@@ -51,7 +57,7 @@ public class Main {
     }
 
     private static void warningUseOnlyNumbers(){
-        System.out.println("Для выбора команды используйте цифры от 1 до 3");
+        System.out.println("Для выбора команды используйте цифры от 1 до 4");
     }
 
     private static void addProduct(){
@@ -108,6 +114,36 @@ public class Main {
 
     private static void showAllProducts(){
         showListOfProducts(true);
+    }
+
+    private static void findProducts(){
+        System.out.println();
+        System.out.println("Введите текст для поиска:");
+
+        try {
+            reader = new BufferedReader(new InputStreamReader(System.in));
+            String consoleLine = reader.readLine();
+
+            System.out.println("Найдено:");
+
+            int counter = 0;
+
+            for (int i = 0; i < shoppingList.size(); i++) {
+                String itemLowCase = shoppingList.get(i).toLowerCase();
+                String consoleLineLowCase = consoleLine.toLowerCase();
+
+                if(itemLowCase.contains(consoleLineLowCase)){
+                    counter++;
+                    System.out.println((i + 1) + ". " + shoppingList.get(i));
+                }
+            }
+
+            if(counter == 0){
+                System.out.println("Ничего не найдено!");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void showListOfProducts(boolean showTitle){
